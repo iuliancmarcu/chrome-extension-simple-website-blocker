@@ -8,5 +8,13 @@
             ],
             "url": "http://json.schemastore.org/chrome-manifest"
         }
-    ]
+    ],
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#113046",
+        "titleBar.activeBackground": "#174362",
+        "titleBar.activeForeground": "#F8FBFD"
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
 }

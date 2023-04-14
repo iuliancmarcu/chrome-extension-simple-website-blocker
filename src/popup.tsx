@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 
 const Popup = () => {
   const [count, setCount] = useState(0);
@@ -22,11 +22,11 @@ const Popup = () => {
         chrome.tabs.sendMessage(
           tab.id,
           {
-            color: "#555555",
+            color: '#555555',
           },
-          (msg) => {
-            console.log("result message:", msg);
-          }
+          msg => {
+            console.log('result message:', msg);
+          },
         );
       }
     });
@@ -34,13 +34,13 @@ const Popup = () => {
 
   return (
     <>
-      <ul style={{ minWidth: "700px" }}>
+      <ul style={{ minWidth: '700px' }}>
         <li>Current URL: {currentURL}</li>
         <li>Current Time: {new Date().toLocaleTimeString()}</li>
       </ul>
       <button
         onClick={() => setCount(count + 1)}
-        style={{ marginRight: "5px" }}
+        style={{ marginRight: '5px' }}
       >
         count up
       </button>
@@ -49,10 +49,10 @@ const Popup = () => {
   );
 };
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById('root')!);
 
 root.render(
   <React.StrictMode>
     <Popup />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
