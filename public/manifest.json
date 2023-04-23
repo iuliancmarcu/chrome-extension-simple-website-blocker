@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
 
-  "name": "Chrome Extension TypeScript Starter",
-  "description": "Chrome Extension, TypeScript, Visual Studio Code",
+  "name": "Website Access Warning",
+  "description": "Warns you when you are accessing a website that is on your blacklist. Useful to keep yourself away from social media websites and maintain your focus.",
   "version": "1.0",
 
   "options_ui": {

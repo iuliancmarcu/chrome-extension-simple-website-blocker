@@ -1,67 +1,83 @@
-import React, { useEffect, useState } from 'react';
+import { ErrorMessage } from '@hookform/error-message';
+import React, { useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { Button } from './components/atom/Button';
+import { TextInput } from './components/atom/TextInput';
+import { OptionsTitle } from './components/molecule/OptionsTitle';
+import { WebsiteList } from './components/organism/WebsiteList';
+import { useExtensionOptions } from './hooks/useExtensionOptions';
+import type { IExtensionOptions } from './utils/types';
 
 const Options = () => {
-  const [color, setColor] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [like, setLike] = useState<boolean>(false);
+  const formMethods = useForm<IExtensionOptions>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors, isDirty, isValid },
+  } = formMethods;
 
-  useEffect(() => {
-    // Restores select box and checkbox state using the preferences
-    // stored in chrome.storage.
-    chrome.storage.sync.get(
-      {
-        favoriteColor: 'red',
-        likesColor: true,
-      },
-      items => {
-        setColor(items.favoriteColor);
-        setLike(items.likesColor);
-      },
-    );
-  }, []);
+  const syncOptions = useExtensionOptions(data => reset(data));
 
-  const saveOptions = () => {
-    // Saves options to chrome.storage.sync.
-    chrome.storage.sync.set(
-      {
-        favoriteColor: color,
-        likesColor: like,
-      },
-      () => {
-        // Update status to let user know options were saved.
-        setStatus('Options saved.');
-        const id = setTimeout(() => {
-          setStatus('');
-        }, 1000);
-        return () => clearTimeout(id);
-      },
-    );
-  };
+  const saveOptions = useCallback(
+    (data: IExtensionOptions) => {
+      syncOptions(data);
+      reset(data);
+    },
+    [reset, syncOptions],
+  );
 
   return (
     <>
-      <div>
-        Favorite color:{' '}
-        <select value={color} onChange={event => setColor(event.target.value)}>
-          <option value="red">red</option>
-          <option value="green">green</option>
-          <option value="blue">blue</option>
-          <option value="yellow">yellow</option>
-        </select>
-      </div>
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={like}
-            onChange={event => setLike(event.target.checked)}
-          />
-          I like colors.
-        </label>
-      </div>
-      <div>{status}</div>
-      <button onClick={saveOptions}>Save</button>
+      <FormProvider {...formMethods}>
+        <form className="p-4" onSubmit={handleSubmit(saveOptions)}>
+          <div className="mb-4 flex flex-col gap-1">
+            <OptionsTitle
+              title="Warning Message"
+              description="This message will be displayed in the browser, whenever a blocked website is visited."
+            />
+            <TextInput
+              placeholder="Message"
+              {...register('warningMessage', { required: true })}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="warningMessage"
+              message="This field is required."
+              render={({ message }) => (
+                <p className="text-red-600">{message}</p>
+              )}
+            />
+          </div>
+          <div className="mb-4 flex flex-col gap-1">
+            <OptionsTitle
+              title="Dismiss"
+              description="If enabled, the warning message will have a dismiss button and the user will be able to visit the website."
+            />
+            <div className="flex items-center gap-2">
+              <label
+                className="flex items-center gap-2"
+                htmlFor="enableDismiss"
+              >
+                <input type="checkbox" {...register('enableDismiss')} />
+                Enable warning dismiss
+              </label>
+            </div>
+          </div>
+          <WebsiteList className="mb-6" />
+          <div className="flex flex-col items-end gap-0.5">
+            <Button
+              className="bg-green-600 disabled:bg-gray-300"
+              type="submit"
+              disabled={!isDirty || !isValid}
+            >
+              Save Changes
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
     </>
   );
 };

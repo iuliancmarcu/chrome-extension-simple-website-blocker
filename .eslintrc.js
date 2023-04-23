@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['prettier'],
+  extends: [
+    'prettier',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+  ],
   plugins: [
     'prettier',
     'simple-import-sort',
@@ -7,8 +11,17 @@ module.exports = {
     '@typescript-eslint',
     'tailwindcss',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   parser: '@typescript-eslint/parser',
   rules: {
+    'react/react-in-jsx-scope': 'off',
+
+    'no-shadow': 'error',
+
     'tailwindcss/classnames-order': 'error',
 
     '@typescript-eslint/consistent-type-imports': 'warn',
