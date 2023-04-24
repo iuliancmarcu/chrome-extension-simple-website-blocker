@@ -1,70 +1,35 @@
-# Chrome Extension TypeScript Starter
+# Simple Website Blocker
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+![build](https://github.com/marcuiulian13/chrome-extension-simple-website-worker/workflows/build/badge.svg)
 
-Chrome Extension, TypeScript and Visual Studio Code
+A simple Chrome extension to block distracting websites and regain control of your focus, improving productivity and time management.
 
-## Prerequisites
-
-* [node + npm](https://nodejs.org/) (Current Version)
-
-## Option
-
-* [Visual Studio Code](https://code.visualstudio.com/)
-
-## Includes the following
-
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
+The extension uses React and TypeScript for the options and popup UIs, and Webpack to bundle the code.
 
 ## Setup
 
-```
+```bash
 npm install
 ```
 
-## Import as Visual Studio Code project
-
-...
-
 ## Build
 
-```
+```bash
 npm run build
 ```
 
 ## Build in watch mode
 
-### terminal
-
-```
+```bash
 npm run watch
 ```
 
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
-
 ## Load extension to chrome
 
-Load `dist` directory
+In Chrome, go to "Manage Extensions", then enable the "Developer Mode" and load the `dist` directory as an unpacked extension.
 
 ## Test
-`npx jest` or `npm run test`
+
+```bash
+npm run test
+```
