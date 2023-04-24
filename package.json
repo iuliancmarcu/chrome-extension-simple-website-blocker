@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-typescript-starter",
+  "name": "chrome-extension-simple-website-blocker",
   "version": "1.0.0",
-  "description": "chrome-extension-typescript-starter",
+  "description": "A simple Chrome extension to block websites and regain control of your focus.",
   "main": "index.js",
   "scripts": {
     "watch": "concurrently \"webpack --config webpack/webpack.dev.js --watch\" \"tailwindcss -i ./src/input.css -o ./dist/css/output.css --watch\"",
@@ -10,16 +10,15 @@
     "test": "npx jest --passWithNoTests",
     "style": "eslint"
   },
-  "author": "",
+  "author": "Iulian-Constantin Marcu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
+    "url": "https://github.com/marcuiulian13/chrome-extension-simple-website-blocker.git"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "clsx": "^1.2.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
@@ -38,6 +37,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.11.0",
     "eslint-plugin-unused-imports": "^2.0.0",
