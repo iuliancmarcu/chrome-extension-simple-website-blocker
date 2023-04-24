@@ -1,4 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
+import clsx from 'clsx';
 import React, { useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -10,13 +11,13 @@ import { WebsiteList } from './components/organism/WebsiteList';
 import { useExtensionOptions } from './hooks/useExtensionOptions';
 import type { IExtensionOptions } from './utils/types';
 
-const Options = () => {
+export const Options = () => {
   const formMethods = useForm<IExtensionOptions>();
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isDirty },
   } = formMethods;
 
   const syncOptions = useExtensionOptions(data => reset(data));
@@ -30,10 +31,13 @@ const Options = () => {
   );
 
   return (
-    <>
+    <div className="min-w-[480px]">
       <FormProvider {...formMethods}>
-        <form className="p-4" onSubmit={handleSubmit(saveOptions)}>
-          <div className="mb-4 flex flex-col gap-1">
+        <form
+          className="flex flex-col gap-4 p-4"
+          onSubmit={handleSubmit(saveOptions)}
+        >
+          <div className="flex flex-col gap-1">
             <OptionsTitle
               title="Warning Message"
               description="This message will be displayed in the browser, whenever a blocked website is visited."
@@ -51,34 +55,48 @@ const Options = () => {
               )}
             />
           </div>
-          <div className="mb-4 flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <OptionsTitle
-              title="Dismiss"
-              description="If enabled, the warning message will have a dismiss button and the user will be able to visit the website."
+              title="Confirm"
+              description="If enabled, there will be a confirmation dialog before the website is blocked."
             />
             <div className="flex items-center gap-2">
               <label
                 className="flex items-center gap-2"
-                htmlFor="enableDismiss"
+                htmlFor="enableConfirm"
               >
-                <input type="checkbox" {...register('enableDismiss')} />
-                Enable warning dismiss
+                <input type="checkbox" {...register('enableConfirm')} />
+                Enable confirmation warning
               </label>
             </div>
           </div>
-          <WebsiteList className="mb-6" />
-          <div className="flex flex-col items-end gap-0.5">
+          <WebsiteList />
+          <div className="flex items-end justify-between">
+            <div className="text-xs text-neutral-300">
+              Built with ❤️ by{' '}
+              <a
+                className="text-blue-300"
+                href="https://iulianmarcu.me/?utm_source=simple-website-blocker-chrome"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Iulian-Constantin Marcu
+              </a>
+            </div>
             <Button
-              className="bg-green-600 disabled:bg-gray-300"
+              className={clsx({
+                '!bg-green-600': isDirty,
+                '!bg-gray-300': !isDirty,
+              })}
               type="submit"
-              disabled={!isDirty || !isValid}
+              disabled={!isDirty}
             >
               Save Changes
             </Button>
           </div>
         </form>
       </FormProvider>
-    </>
+    </div>
   );
 };
 

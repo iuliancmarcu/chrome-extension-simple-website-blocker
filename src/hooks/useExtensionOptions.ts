@@ -1,18 +1,11 @@
 import { useCallback, useEffect } from 'react';
 
+import { getOptions } from '../utils/storage';
 import type { IExtensionOptions } from '../utils/types';
 
 export function useExtensionOptions(onLoad: (data: IExtensionOptions) => void) {
   useEffect(() => {
-    chrome.storage.sync.get(
-      {
-        warningMessage:
-          'You are trying to access a website that is marked as restricted.',
-        websites: [],
-        enableDismiss: true,
-      } as IExtensionOptions,
-      items => onLoad(items as IExtensionOptions),
-    );
+    getOptions(onLoad);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

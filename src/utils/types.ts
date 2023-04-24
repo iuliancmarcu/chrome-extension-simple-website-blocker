@@ -5,5 +5,5 @@ export interface IWebsite {
 export interface IExtensionOptions {
   warningMessage: string;
   websites: IWebsite[];
-  enableDismiss: boolean;
+  enableConfirm: boolean;
 }
