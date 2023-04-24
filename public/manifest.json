@@ -3,14 +3,27 @@
 
   "name": "Simple Website Blocker",
   "description": "Block the websites that steal your focus, and improve your productivity.",
-  "version": "1.0",
+  "version": "0.0.1",
+  "icons": {
+    "16": "icon16.png",
+    "24": "icon24.png",
+    "32": "icon32.png",
+    "64": "icon64.png",
+    "128": "icon128.png"
+  },
 
   "options_ui": {
     "page": "options.html"
   },
 
   "action": {
-    "default_icon": "icon.png",
+    "default_icon": {
+      "16": "icon16.png",
+      "24": "icon24.png",
+      "32": "icon32.png",
+      "64": "icon64.png",
+      "128": "icon128.png"
+    },
     "default_popup": "popup.html"
   },
 
