@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '../../utils/cn';
 
 interface IButton
   extends React.DetailedHTMLProps<
@@ -18,7 +18,7 @@ export function Button({
   return (
     <button
       {...props}
-      className={clsx(
+      className={cn(
         'rounded-full border-none bg-slate-600 px-6 py-2',
         'text-sm text-neutral-50',
         className,

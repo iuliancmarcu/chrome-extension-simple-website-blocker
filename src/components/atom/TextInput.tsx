@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import React from 'react';
+
+import { cn } from '../../utils/cn';
 
 export interface ITextInput
   extends React.DetailedHTMLProps<
@@ -16,10 +17,10 @@ function TextInputWithRef(
   ref: React.ForwardedRef<HTMLInputElement>,
 ) {
   return (
-    <div className={clsx('relative flex items-center gap-2', className)}>
+    <div className={cn('relative flex items-center gap-2', className)}>
       <input
         {...props}
-        className={clsx(
+        className={cn(
           'w-full rounded-full border-none bg-slate-100 px-4 py-2',
           { 'pl-8': iconLeft },
           { 'pr-8': iconRight },

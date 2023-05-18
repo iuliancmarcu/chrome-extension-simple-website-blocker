@@ -1,5 +1,4 @@
 import { ErrorMessage } from '@hookform/error-message';
-import clsx from 'clsx';
 import React, { useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,6 +8,7 @@ import { TextInput } from './components/atom/TextInput';
 import { OptionsTitle } from './components/molecule/OptionsTitle';
 import { WebsiteList } from './components/organism/WebsiteList';
 import { useExtensionOptions } from './hooks/useExtensionOptions';
+import { cn } from './utils/cn';
 import type { IExtensionOptions } from './utils/types';
 
 export const Options = () => {
@@ -84,9 +84,9 @@ export const Options = () => {
               </a>
             </div>
             <Button
-              className={clsx({
-                '!bg-green-600': isDirty,
-                '!bg-gray-300': !isDirty,
+              className={cn({
+                'bg-green-600': isDirty,
+                'bg-gray-300': !isDirty,
               })}
               type="submit"
               disabled={!isDirty}

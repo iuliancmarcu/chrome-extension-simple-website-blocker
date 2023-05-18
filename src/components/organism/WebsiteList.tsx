@@ -46,7 +46,7 @@ export function WebsiteList({ className }: IWebsiteList) {
           onChange={e => setSearch(e.target.value.toLowerCase().trim())}
         />
         <Button
-          className="!px-2"
+          className="px-2"
           type="button"
           title="Add new website"
           onClick={() => prepend({ address: '' }, { shouldFocus: true })}
