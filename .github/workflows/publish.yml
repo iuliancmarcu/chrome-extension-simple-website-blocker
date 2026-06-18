@@ -1,0 +1,44 @@
+name: publish
+
+# Publishes the extension to the Chrome Web Store when a version tag is pushed.
+# Requires the EXTENSION_ID, PUBLISHER_ID, CLIENT_ID, CLIENT_SECRET and
+# REFRESH_TOKEN repo secrets to be configured first (see RELEASING.md).
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Verify tag matches manifest version
+        run: |
+          MANIFEST_VERSION=$(node -p "require('./public/manifest.json').version")
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "manifest=$MANIFEST_VERSION tag=$TAG_VERSION"
+          if [ "$MANIFEST_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Tag v$TAG_VERSION does not match manifest version $MANIFEST_VERSION"
+            exit 1
+          fi
+      - name: Upload & publish to Chrome Web Store
+        run: npx --yes chrome-webstore-upload-cli@4 --source dist
+        env:
+          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+          PUBLISHER_ID: ${{ secrets.PUBLISHER_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
