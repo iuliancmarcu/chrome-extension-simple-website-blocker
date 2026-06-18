@@ -35,10 +35,18 @@ describe('WebsiteList', () => {
     expect(inputs[1]).toHaveValue('reddit.com');
   });
 
-  it('shows an empty state when there are no websites', () => {
+  it('prompts for a first website and disables search when empty', () => {
     renderWebsiteList([]);
 
-    expect(screen.getByText('No websites found.')).toBeInTheDocument();
+    expect(screen.getByText(/add your first website/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search...')).toBeDisabled();
+    expect(screen.queryByText('No websites found.')).not.toBeInTheDocument();
+  });
+
+  it('keeps the add button available when the list is empty', () => {
+    renderWebsiteList([]);
+
+    expect(screen.getByTitle('Add new website')).toBeInTheDocument();
   });
 
   it('prepends an empty row when the add button is clicked', async () => {
@@ -52,14 +60,14 @@ describe('WebsiteList', () => {
     expect(inputs[1]).toHaveValue('x.com');
   });
 
-  it('removes a row when its remove icon is clicked', async () => {
+  it('removes a row and returns to the empty prompt', async () => {
     renderWebsiteList([{ address: 'x.com' }]);
 
     expect(removeIcons()).toHaveLength(1);
     await userEvent.click(removeIcons()[0]);
 
     expect(screen.queryByDisplayValue('x.com')).not.toBeInTheDocument();
-    expect(screen.getByText('No websites found.')).toBeInTheDocument();
+    expect(screen.getByText(/add your first website/i)).toBeInTheDocument();
   });
 
   it('filters the list by the search query', async () => {
@@ -69,6 +77,26 @@ describe('WebsiteList', () => {
 
     expect(screen.getByDisplayValue('reddit.com')).toBeInTheDocument();
     expect(screen.queryByDisplayValue('x.com')).not.toBeInTheDocument();
+  });
+
+  it('shows "No websites found." only when a search matches nothing', async () => {
+    renderWebsiteList([{ address: 'x.com' }]);
+
+    await userEvent.type(screen.getByPlaceholderText('Search...'), 'zzz');
+
+    expect(screen.getByText('No websites found.')).toBeInTheDocument();
+    expect(
+      screen.queryByText(/add your first website/i),
+    ).not.toBeInTheDocument();
+  });
+
+  it('hides the add button while searching', async () => {
+    renderWebsiteList([{ address: 'x.com' }]);
+    expect(screen.getByTitle('Add new website')).toBeInTheDocument();
+
+    await userEvent.type(screen.getByPlaceholderText('Search...'), 'x');
+
+    expect(screen.queryByTitle('Add new website')).not.toBeInTheDocument();
   });
 
   it('normalizes a pasted URL to a bare domain on blur', async () => {
