@@ -7,7 +7,7 @@ tag builds the extension and uploads + publishes it via
 
 ## One-time setup
 
-The workflow needs four repository secrets. You only have to do this once.
+The workflow needs five repository secrets. You only have to do this once.
 
 1. **Enable the API.** In the [Google Cloud Console](https://console.cloud.google.com/),
    create (or pick) a project and enable the **Chrome Web Store API**.
@@ -18,18 +18,21 @@ The workflow needs four repository secrets. You only have to do this once.
 3. **Get a refresh token.** Follow the CLI's guide:
    <https://github.com/fregante/chrome-webstore-upload-keys>. It walks through the OAuth
    consent flow and prints a **refresh token**.
-4. **Find the extension ID.** It's the long id in the item's Web Store URL / in the
-   Developer Dashboard. The extension must already exist on the store (the first ever
-   upload of a brand-new item is done manually through the dashboard).
+4. **Find the extension ID and publisher ID.** The **extension ID** is the long id in the
+   item's Web Store URL / Developer Dashboard (the extension must already exist on the store —
+   the first upload of a brand-new item is done manually through the dashboard). The
+   **publisher ID** is your developer-account id, shown in the Developer Dashboard URL while
+   logged in: `chrome.google.com/webstore/devconsole/<PUBLISHER_ID>`.
 5. **Add the secrets.** Repo → Settings → Secrets and variables → Actions → *New
    repository secret*, for each of:
 
-   | Secret          | Value                         |
-   | --------------- | ----------------------------- |
-   | `EXTENSION_ID`  | The extension's store ID      |
-   | `CLIENT_ID`     | OAuth client ID               |
-   | `CLIENT_SECRET` | OAuth client secret           |
-   | `REFRESH_TOKEN` | Refresh token from step 3     |
+   | Secret          | Value                                       |
+   | --------------- | ------------------------------------------- |
+   | `EXTENSION_ID`  | The extension's store ID                    |
+   | `PUBLISHER_ID`  | Your Chrome Web Store developer-account ID  |
+   | `CLIENT_ID`     | OAuth client ID                             |
+   | `CLIENT_SECRET` | OAuth client secret                         |
+   | `REFRESH_TOKEN` | Refresh token from step 3                   |
 
 > **Heads up:** a refresh token that goes unused for ~6 months is revoked by Google. If
 > releases are infrequent, re-generate it (step 3) or run a periodic job that exercises

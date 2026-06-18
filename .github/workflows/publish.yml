@@ -1,8 +1,8 @@
 name: publish
 
 # Publishes the extension to the Chrome Web Store when a version tag is pushed.
-# Requires the EXTENSION_ID, CLIENT_ID, CLIENT_SECRET and REFRESH_TOKEN repo
-# secrets to be configured first (see RELEASING.md).
+# Requires the EXTENSION_ID, PUBLISHER_ID, CLIENT_ID, CLIENT_SECRET and
+# REFRESH_TOKEN repo secrets to be configured first (see RELEASING.md).
 
 on:
   push:
@@ -38,6 +38,7 @@ jobs:
         run: npx --yes chrome-webstore-upload-cli@4 --source dist
         env:
           EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+          PUBLISHER_ID: ${{ secrets.PUBLISHER_ID }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
