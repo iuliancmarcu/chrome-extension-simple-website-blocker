@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FaPlus, FaSearch, FaTimes } from 'react-icons/fa';
 
+import {
+  normalizeAddress,
+  WEBSITE_ADDRESS_PATTERN,
+} from '../../utils/matching';
 import type { IExtensionOptions } from '../../utils/types';
 import { Button } from '../atom/Button';
 import { TextInput } from '../atom/TextInput';
@@ -16,6 +20,7 @@ export function WebsiteList({ className }: IWebsiteList) {
   const {
     control,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<IExtensionOptions>();
 
@@ -65,6 +70,11 @@ export function WebsiteList({ className }: IWebsiteList) {
             return null;
           }
 
+          const addressField = register(`websites.${index}.address`, {
+            required: true,
+            pattern: WEBSITE_ADDRESS_PATTERN,
+          });
+
           return (
             <div key={field.id} className="w-full">
               <TextInput
@@ -73,10 +83,17 @@ export function WebsiteList({ className }: IWebsiteList) {
                 iconRight={
                   <FaTimes role="button" onClick={() => remove(index)} />
                 }
-                {...register(`websites.${index}.address`, {
-                  required: true,
-                  pattern: /^[\w-]+(\.[\w-]+)+$/,
-                })}
+                {...addressField}
+                onBlur={e => {
+                  addressField.onBlur(e);
+                  const normalized = normalizeAddress(e.target.value);
+                  if (normalized && normalized !== e.target.value) {
+                    setValue(`websites.${index}.address`, normalized, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
+                  }
+                }}
               />
               <ErrorMessage
                 errors={errors}

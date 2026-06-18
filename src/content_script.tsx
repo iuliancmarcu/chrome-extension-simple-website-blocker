@@ -1,16 +1,11 @@
+import { isBlocked } from './utils/matching';
 import { getOptions } from './utils/storage';
 import type { IExtensionOptions } from './utils/types';
 
 async function run() {
   const options = await getOptions();
 
-  if (
-    !options.websites.some(website =>
-      window.location.origin
-        .toLowerCase()
-        .includes(website.address.toLowerCase()),
-    )
-  ) {
+  if (!isBlocked(window.location.hostname, options.websites)) {
     return;
   }
 

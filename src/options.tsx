@@ -1,41 +1,30 @@
 import { ErrorMessage } from '@hookform/error-message';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { FormProvider, useForm } from 'react-hook-form';
+import { FaCheck } from 'react-icons/fa';
 
-import { Button } from './components/atom/Button';
 import { TextInput } from './components/atom/TextInput';
 import { OptionsTitle } from './components/molecule/OptionsTitle';
 import { WebsiteList } from './components/organism/WebsiteList';
-import { useExtensionOptions } from './hooks/useExtensionOptions';
-import { cn } from './utils/cn';
+import { useAutoSaveOptions } from './hooks/useAutoSaveOptions';
 import type { IExtensionOptions } from './utils/types';
 
 export const Options = () => {
-  const formMethods = useForm<IExtensionOptions>();
+  const formMethods = useForm<IExtensionOptions>({ mode: 'onBlur' });
   const {
     register,
-    reset,
-    handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = formMethods;
 
-  const syncOptions = useExtensionOptions(data => reset(data));
-
-  const saveOptions = useCallback(
-    (data: IExtensionOptions) => {
-      syncOptions(data);
-      reset(data);
-    },
-    [reset, syncOptions],
-  );
+  const status = useAutoSaveOptions(formMethods);
 
   return (
     <div className="min-w-[480px]">
       <FormProvider {...formMethods}>
         <form
           className="flex flex-col gap-4 p-4"
-          onSubmit={handleSubmit(saveOptions)}
+          onSubmit={e => e.preventDefault()}
         >
           <div className="flex flex-col gap-1">
             <OptionsTitle
@@ -83,16 +72,19 @@ export const Options = () => {
                 Iulian-Constantin Marcu
               </a>
             </div>
-            <Button
-              className={cn({
-                'bg-green-600': isDirty,
-                'bg-gray-300': !isDirty,
-              })}
-              type="submit"
-              disabled={!isDirty}
+            <div
+              className="flex items-center gap-1 text-sm text-neutral-500"
+              aria-live="polite"
             >
-              Save Changes
-            </Button>
+              {status === 'saving' ? (
+                <span>Saving…</span>
+              ) : (
+                <>
+                  <FaCheck className="text-green-600" />
+                  <span>All changes saved</span>
+                </>
+              )}
+            </div>
           </div>
         </form>
       </FormProvider>

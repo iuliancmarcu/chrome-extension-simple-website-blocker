@@ -3,7 +3,7 @@
 
   "name": "Simple Website Blocker",
   "description": "Block the websites that steal your focus, and improve your productivity.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "icons": {
     "16": "icon16.png",
     "24": "icon24.png",

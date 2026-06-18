@@ -1,19 +1,12 @@
+import { DEFAULT_OPTIONS } from './options';
 import type { IExtensionOptions } from './types';
 
 export async function getOptions(onLoad?: (data: IExtensionOptions) => void) {
   return new Promise<IExtensionOptions>(resolve => {
-    chrome.storage.sync.get(
-      {
-        warningMessage:
-          'You are trying to access a website that is marked as restricted.',
-        websites: [],
-        enableConfirm: true,
-      } as IExtensionOptions,
-      items => {
-        onLoad?.(items as IExtensionOptions);
-        resolve(items as IExtensionOptions);
-      },
-    );
+    chrome.storage.sync.get(DEFAULT_OPTIONS, items => {
+      onLoad?.(items as IExtensionOptions);
+      resolve(items as IExtensionOptions);
+    });
   });
 }
 
