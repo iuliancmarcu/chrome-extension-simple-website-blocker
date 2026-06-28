@@ -1,6 +1,6 @@
 # Simple Website Blocker
 
-[![build](https://github.com/marcuiulian13/chrome-extension-simple-website-blocker/actions/workflows/build.yml/badge.svg)](https://github.com/marcuiulian13/chrome-extension-simple-website-blocker/actions/workflows/build.yml)
+[![Build and Test](https://github.com/iuliancmarcu/chrome-extension-simple-website-blocker/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/iuliancmarcu/chrome-extension-simple-website-blocker/actions/workflows/build-and-test.yml)
 
 A simple Chrome extension to block distracting websites and regain control of your focus, improving productivity and time management.
 

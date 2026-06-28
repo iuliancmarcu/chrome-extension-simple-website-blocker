@@ -31,6 +31,10 @@ export function WebsiteList({ className }: IWebsiteList) {
 
   const [search, setSearch] = useState<string>('');
 
+  const isEmpty = fields.length === 0;
+  const isSearching = search.length > 0;
+  const hasMatches = fields.some(field => field.address.includes(search));
+
   return (
     <div className={className}>
       <OptionsTitle
@@ -39,8 +43,9 @@ export function WebsiteList({ className }: IWebsiteList) {
       />
       <div className="mb-2 flex items-center gap-2">
         <TextInput
-          className="w-full"
+          className="w-full disabled:cursor-not-allowed disabled:opacity-60"
           value={search}
+          disabled={isEmpty}
           placeholder="Search..."
           iconLeft={<FaSearch />}
           iconRight={
@@ -50,19 +55,26 @@ export function WebsiteList({ className }: IWebsiteList) {
           }
           onChange={e => setSearch(e.target.value.toLowerCase().trim())}
         />
-        <Button
-          className="px-2"
-          type="button"
-          title="Add new website"
-          onClick={() => prepend({ address: '' }, { shouldFocus: true })}
-        >
-          <div className="flex items-center gap-1">
-            <FaPlus />
-          </div>
-        </Button>
+        {!isSearching && (
+          <Button
+            className="px-2"
+            type="button"
+            title="Add new website"
+            onClick={() => prepend({ address: '' }, { shouldFocus: true })}
+          >
+            <div className="flex items-center gap-1">
+              <FaPlus />
+            </div>
+          </Button>
+        )}
       </div>
       <div className="-m-1 flex max-h-56 flex-col items-center gap-1 overflow-y-scroll p-1">
-        {!fields.some(field => field.address.includes(search)) && (
+        {isEmpty && (
+          <p className="text-gray-500">
+            Add your first website using the “+” button.
+          </p>
+        )}
+        {!isEmpty && isSearching && !hasMatches && (
           <p className="text-gray-500">No websites found.</p>
         )}
         {fields.map((field, index) => {
